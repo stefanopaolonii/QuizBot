@@ -1,0 +1,32 @@
+[
+    {
+        "id": -1,
+        "language": "en",
+        "text": "First question text here",
+        "options": [
+            "Option 1",
+            "Option 2",
+            "Option 3",
+            "Option 4"
+        ],
+        "correct_index": 0,
+        "verified": true,
+        "explanation": "Explanation text here",
+        "topic": "Topic here"
+    },
+    {
+        "id": -1,
+        "language": "en",
+        "text": "Second question text here",
+        "options": [
+            "Option 1",
+            "Option 2",
+            "Option 3",
+            "Option 4"
+        ],
+        "correct_index": 0,
+        "verified": true,
+        "explanation": "Explanation text here",
+        "topic": "Topic here"
+    }
+]
