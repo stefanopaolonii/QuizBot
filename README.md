@@ -111,3 +111,10 @@ python main.py
 ```
 
 This will launch the bot, and it will be ready to interact with users. Ensure the bot token and configuration files are set up correctly before running it.
+
+## Join the Discord server! 
+
+Want to join the conversation? Join Discord server!  
+
+🔗 [Click here to join](https://discord.gg/WJDjPHANV7)
+
