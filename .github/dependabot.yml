@@ -1,0 +1,6 @@
+version: 2
+updates:
+  - package-ecosystem: "pip"       # Ecosistema Python
+    directory: "/"                  # Directory principale (dove si trova requirements.txt)
+    schedule:
+      interval: "daily"             # Frequenza di aggiornamento giornaliera

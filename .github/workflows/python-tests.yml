@@ -1,0 +1,69 @@
+name: CI for Dependabot PRs
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Merge branch 'main' into PR
+      run: git merge origin/main
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: |
+        python -m venv venv
+        . venv/bin/activate
+        pip install -r requirements.txt
+
+    - name: Set PYTHONPATH
+      run: echo "PYTHONPATH=$PYTHONPATH:$(pwd)" >> $GITHUB_ENV
+
+    - name: Run tests
+      run: |
+        . venv/bin/activate
+        pytest
+
+  merge:
+    name: Merge Pull Request
+    runs-on: ubuntu-latest
+    needs: test
+    if: success()
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        fetch-depth: 0
+
+    - name: Automatic Merge
+      run: |
+        git config --global user.name 'github-actions'
+        git config --global user.email 'github-actions@github.com'
+        git merge origin/main
+        git push origin HEAD:main
+
+  cleanup:
+    name: Close Pull Request
+    runs-on: ubuntu-latest
+    needs: test
+    if: failure()
+    steps:
+    - name: Close PR
+      run: |
+        gh pr close ${{ github.event.pull_request.number }} -d
