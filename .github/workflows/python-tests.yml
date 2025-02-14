@@ -17,8 +17,8 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Merge branch 'main' into PR
-      run: git merge origin/main
+    - name: Fetch latest changes
+      run: git fetch origin main
 
     - name: Set up Python
       uses: actions/setup-python@v2
@@ -51,11 +51,12 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
         fetch-depth: 0
 
-    - name: Automatic Merge
+    - name: Rebase with main branch
       run: |
         git config --global user.name 'github-actions'
         git config --global user.email 'github-actions@github.com'
-        git merge origin/main
+        git fetch origin main
+        git rebase origin/main
         git push origin HEAD:main
 
   cleanup:
@@ -64,6 +65,6 @@ jobs:
     needs: test
     if: failure()
     steps:
-    - name: Close PR
+    - name: Close PR if failure occurs
       run: |
         gh pr close ${{ github.event.pull_request.number }} -d
