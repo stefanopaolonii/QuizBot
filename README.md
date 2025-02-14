@@ -1,90 +1,115 @@
-# quiz-bot
+# Quiz-Bot: A Telegram Bot for Interactive Quizzes 🤖🎮
 
-## Description
-`quiz-bot` is a simple Telegram bot designed to manage interactive quizzes. Users can start a quiz, add new questions, review existing questions, and modify questions. The bot supports selecting topics and languages for quiz questions. The bot can be used by all users, but only allowed users can add and modify questions.
+`quiz-bot` is a **Telegram bot** designed to create, manage, and take interactive quizzes. It allows users to start a quiz, add and modify questions, and review existing questions. The bot supports **multiple languages** and allows questions to be categorized by topics. 🌍📚
 
-## Features
-- **Start Quiz**: Users can start a quiz and answer a series of questions.
-- **Add Question**: Allowed users can add new questions to the quiz database.
-- **Review Question**: Users can review existing questions.
-- **Change Question**: Allowed users can modify existing questions.
+While all users can participate in quizzes, only authorized users (staff) can add, edit, and manage quiz questions, providing a flexible and secure environment for quiz management. 🔐
 
-## Requirements
-- Python 3.7+
-- Python libraries: `python-telegram-bot`, `asyncio`
-- Docker (optional)
+## Features of Quiz-Bot ✨
 
-## Installation
+- **Start Quiz**: Users can initiate a quiz and answer a series of questions. 🎯
+- **Add Question**: Authorized users (staff members) can add new questions to the quiz database. 📝
+- **Review Question**: Users can review and explore existing quiz questions. 🔍
+- **Modify Question**: Only staff members can modify or update existing questions. 🛠️
+- **Staff Management**: An advanced system for managing staff with different roles, such as Owner, Admin, and Moderator. 👨‍💻👩‍💻
+- **Report System**: Users can submit, review, and manage quiz-related reports. 📊
+- **Privacy Enhancements**: User IDs are masked for added privacy and anonymity. 🕵️‍♂️
+- **Automated Testing**: Ensures that updates do not break functionality by testing the bot automatically. 🧪
+- **Module Update Automation**: Automatically manages and updates the bot’s dependencies. 🔄
 
-### Using Python
-1. Fork the repository and clone your fork:
-    ```sh
+## Requirements 📋
+
+- **Python Version**: 3.7 or higher 🐍
+- **Required Libraries**: 
+  - `python-telegram-bot` (for Telegram API integration) 📲
+  - `asyncio` (for asynchronous functionality) ⏳
+- **Optional**: Docker for containerized deployment 🚢
+
+## Installation Guide 🛠️
+
+### Install Quiz-Bot Using Python
+
+1. **Fork and Clone the Repository**:
+    ```bash
     git clone https://github.com/your-username/quiz-bot.git
     cd quiz-bot
     ```
 
-2. Create a virtual environment and activate it:
-    ```sh
+2. **Create a Virtual Environment**:
+    ```bash
     python -m venv venv
     source venv/bin/activate  # On Windows: venv\Scripts\activate
     ```
 
-3. Install the dependencies:
-    ```sh
+3. **Install Required Dependencies**:
+    ```bash
     pip install -r requirements.txt
     ```
 
-### Using Docker
-1. Fork the repository and clone your fork:
-    ```sh
+### Install Quiz-Bot Using Docker
+
+1. **Fork and Clone the Repository**:
+    ```bash
     git clone https://github.com/your-username/quiz-bot.git
     cd quiz-bot
     ```
 
-2. Build the Docker image:
-    ```sh
+2. **Build the Docker Image**:
+    ```bash
     docker build -t quiz-bot .
     ```
 
-3. Run the Docker container:
-    ```sh
+3. **Run the Docker Container**:
+    ```bash
     docker run -d --name quiz-bot -v $(pwd)/config.py:/app/config.py -v $(pwd)/questions.json:/app/questions.json quiz-bot
     ```
 
-## Configuration
-1. Create a [config.py](http://_vscodecontentref_/1) file in the main project directory with the following content:
+## Configuration of Quiz-Bot ⚙️
+
+1. **Create a `config.py` File**:  
+   Create a `config.py` file in the main project directory with the following content:
     ```python
-    TOKEN = "YOUR_TELEGRAM_TOKEN"
-    QUESTIONS_JSON_PATH = "questions.json"
-    ALLOWED_USER_IDS = [ ]  # Replace with the IDs of authorized users
+    TOKEN = "YOUR_BOT_TOKEN"
+    QUESTIONS_JSON_PATH = "data/questions.json"
+    STAFF_JSON_PATH = "data/staff.json"
+    REPORT_JSON_PATH = "data/reports.json"
     ```
 
-2. Ensure you have a [questions.json](http://_vscodecontentref_/2) file in the main project directory. This file should contain an array of questions in JSON format.
-## JSON Format for Questions
-Each question in the [questions.json](http://_vscodecontentref_/3) file should follow this format:
-```json
-[
-    {
-        "id": -1,
-        "language": "en",
-        "text": "Question text here",
-        "options": [
-            "Option 1",
-            "Option 2",
-            "Option 3",
-            "Option 4"
-        ],
-        "correct_index": 0,
-        "verified": true,
-        "explanation": "Explanation text here",
-        "topic": "Topic here"
-    },
-]
-```
+2. **Setup Questions File (`questions.json`)**:  
+   Ensure you have a `data/questions.json` file containing an array of questions in the following format:
+    ```json
+    [
+        {
+            "id": -1,
+            "language": "en",
+            "text": "What is the capital of France?",
+            "options": [
+                "Berlin",
+                "Madrid",
+                "Paris",
+                "Rome"
+            ],
+            "correct_index": 2,
+            "verified": true,
+            "explanation": "Paris is the capital city of France.",
+            "topic": "Geography"
+        }
+    ]
+    ```
 
+3. **Setup Staff File (`staff.json`)**:  
+   Define the staff members and their roles in the `staff.json` file:
+    ```json
+    [
+        {
+            "id": "YOUR_USER_ID",
+            "role": "Owner"  # Possible roles: Owner, Admin, Mod
+        }
+    ]
+    ```
 
-## Running the Bot
-To start the bot, run the following command:
-```sh
+## Running the Quiz-Bot 🚀
+
+Once you've completed the installation and configuration steps, you can start the bot with the following command:
+
+```bash
 python main.py
-```
