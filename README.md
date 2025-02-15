@@ -16,6 +16,11 @@ While all users can participate in quizzes, only authorized users (staff) can ad
 - **Automated Testing**: Ensures that updates do not break functionality by testing the bot automatically. 🧪
 - **Module Update Automation**: Automatically manages and updates the bot’s dependencies. 🔄
 
+<!--
+Keywords for Enhanced Visibility:
+Telegram bot, Quiz bot, Interactive quizzes, Telegram quiz bot, Python Telegram bot, Python quiz bot, Multiple language support, Quiz management system, Staff management, Quiz question database, Quiz questions, Automated testing, Privacy features in bot, Data-driven quizzes, Open source quiz bot, Dockerized Telegram bot, Telegram API, Online quiz system, Quiz questions categorization, Quiz reporting
+-->
+
 ## Requirements 📋
 
 - **Python Version**: 3.7 or higher 🐍
