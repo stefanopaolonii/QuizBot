@@ -28,16 +28,13 @@ jobs:
     - name: Install dependencies
       run: |
         python -m venv venv
-        source venv/bin/activate  # Change to 'source'
+        source venv/bin/activate
         pip install -r requirements.txt
-
-    - name: Set PYTHONPATH
-      run: echo "PYTHONPATH=$PYTHONPATH:$(pwd)" >> $GITHUB_ENV
+        pip install pytest
 
     - name: Run tests
       run: |
-        source venv/bin/activate  # Change to 'source'
-        pip install pytest  # Ensure pytest is installed
+        source venv/bin/activate 
         pytest
 
   merge:
