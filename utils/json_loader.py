@@ -9,7 +9,7 @@ from quiz_bot.question import Question
 
 class JSONQuestionsLoader:
 
-# Mwtgod to load the questions from the file
+# Method to load the questions from the file
     def load_from_file(self, path: str) -> Dict[int, Question]:
         with open(path, "r", encoding="utf-8") as f:
             questions_list = json.load(f)
@@ -33,9 +33,9 @@ class JSONQuestionsLoader:
 # Method to save the questions to the file
     def save_to_file(self, path: str, questions_dict: Dict[int, Question]):
         """
-        Salva le domande nel file JSON.
+        Saves the questions to the JSON file.
         """
-        # Prepara il formato dei dati da salvare
+        # Prepare the data format to be saved
         questions_list = []
         for question in questions_dict.values():
             q_data = {
@@ -50,7 +50,7 @@ class JSONQuestionsLoader:
             }
             questions_list.append(q_data)
 
-        # Scrivi nel file JSON
+        # Write to the JSON file
         with open(path, "w", encoding="utf-8") as f:
             json.dump(questions_list, f, ensure_ascii=False, indent=4)
         
