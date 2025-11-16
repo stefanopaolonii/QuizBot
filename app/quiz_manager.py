@@ -3,7 +3,8 @@
 from typing import Dict, List
 from .question import Question
 from utils import QuestionsLoader
-from app import set_last_question_id, correct_answer_weight, wrong_answer_weight
+from app import set_last_question_id
+from config import CORRECT_ANSWER_WEIGHT, WRONG_ANSWER_WEIGHT
 import random
 
 class QuizManager:
@@ -47,10 +48,6 @@ class QuizManager:
     def get_question_data(self, question_id: int) -> Question:
         return self.questions_db.get(question_id, None)
 
-    def add_question_data(self,question: Question):
-        self.questions_db[question.id] = question
-        self.save_dictioanry_to_json(self.question_file)
-
     def extract_list_of_all_topics(self) -> list:
         return list({question.topic.lower() for question in self.questions_db.values()})
         
@@ -63,19 +60,9 @@ class QuizManager:
     
     def exclude_questions_not_related_to_selected_language(self, language: str) -> list:
         return [question.id for question in self.questions_db.values() if question.language.lower() != language.lower()]
-    
-    def save_dictioanry_to_json(self, path: str):
-        print("OK savedict")
-        self.question_loader.save_to_file(path, self.questions_db)
-
-    def quiz_delete_question(self, question_id: int):
-        print("OK delete")
-        self.questions_db.pop(question_id, None)
-        print("OK delete2")
-        self.save_dictioanry_to_json(self.question_file)
 
     def quiz_score(self, correct: int, wrong: int):
-        score = wrong*(-wrong_answer_weight) + correct*(correct_answer_weight)
+        score = wrong*(-WRONG_ANSWER_WEIGHT) + correct*(CORRECT_ANSWER_WEIGHT)
         return score
 
     def scramble_options(self, options: List[str]) -> Dict[int, int]:

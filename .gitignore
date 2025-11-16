@@ -1,0 +1,16 @@
+# Environment variables
+.env
+
+# Virtual environment folders
+venv/
+*.venv
+
+# Python cache files
+__pycache__/
+*.pyc
+
+# Telegram bot persistence file
+quiz_bot_data.pkl
+
+# Operating system-specific files
+.DS_Store

@@ -1,76 +1,82 @@
 import pytest
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, AsyncMock
 from app.bot_runner import QuizBot
 from telegram import Update, Bot
 from telegram.ext import CallbackContext
-from app.handlers import _escape_markdown
+from app.handlers import _escape_markdown, State
 from app import main_menu_text
 
-# Mock delle dipendenze di Telegram
+# Mock Telegram dependencies
 @pytest.fixture
 def mock_bot():
-    # Mock di una bot application
+    # Mock a bot application
     bot = MagicMock(spec=Bot)
-    quiz_bot = QuizBot("dummy_token", "data/questions.json", "data/staff.json", "data/reports.json", MagicMock())
+    quiz_bot = QuizBot("dummy_token", "data/questions.json", MagicMock())
     quiz_bot.application.bot = bot
+    # Mock a coroutine method
+    quiz_bot.conv_quiz_start = AsyncMock()
+    quiz_bot.conv_review_question_start = AsyncMock()
     return quiz_bot
 
 @pytest.fixture
 def mock_update():
-    # Crea un mock di Update
+    # Create a mock Update
     mock_update = MagicMock(spec=Update)
-    mock_update.effective_user.id = 12345  # Un ID fittizio
-    mock_update.effective_chat.id = 12345  # Un ID fittizio per il chat
+    mock_update.effective_user.id = 12345  # A dummy ID
+    mock_update.effective_chat.id = 12345  # A dummy chat ID
     return mock_update
 
 @pytest.fixture
 def mock_context():
-    # Crea un mock di CallbackContext
-    return MagicMock(spec=CallbackContext)
+    # Create a mock CallbackContext
+    context = MagicMock(spec=CallbackContext)
+    context.user_data = {}
+    return context
 
-# Test per il comando /start
+# Test for the /start command
 @pytest.mark.asyncio
 async def test_command_start(mock_bot, mock_update, mock_context):
-    # Mock della risposta del bot per l'invio di un messaggio
+    # Mock the bot's response for sending a message
     await mock_bot.command_start(mock_update, mock_context)
     
-    # Verifica che il metodo send_message venga chiamato con i corretti parametri
-    mock_context.bot.send_message.assert_called_once_with(
+    # Verify that the send_message method is called with the correct parameters
+    mock_bot.application.bot.send_message.assert_called_once_with(
         chat_id=mock_update.effective_chat.id,
         text=_escape_markdown(main_menu_text),
         parse_mode="MarkdownV2",
-        reply_markup=MagicMock.ANY  # Verifica che venga passato un reply_markup
+        reply_markup=MagicMock.ANY  # Verify that a reply_markup is passed
     )
+    assert mock_context.user_data["state"] == State.SELECTING_ACTION
 
-# Test per il comando /quiz
+# Test for the /quiz command
 @pytest.mark.asyncio
 async def test_command_quiz(mock_bot, mock_update, mock_context):
-    # Simula il comportamento del comando /quiz
+    # Simulate the behavior of the /quiz command
     await mock_bot.command_quiz(mock_update, mock_context)
     
-    # Verifica che il metodo conv_quiz_start venga chiamato
+    # Verify that the conv_quiz_start method is called
     mock_bot.conv_quiz_start.assert_called_once_with(mock_update, mock_context)
 
-# Test per il comando /addq
+# Test for the /review command
 @pytest.mark.asyncio
-async def test_command_add_question(mock_bot, mock_update, mock_context):
-    # Simula il comportamento del comando /addq
-    await mock_bot.command_add_question(mock_update, mock_context)
+async def test_command_review(mock_bot, mock_update, mock_context):
+    # Simulate the behavior of the /review command
+    await mock_bot.command_review(mock_update, mock_context)
     
-    # Verifica che il metodo conv_add_question_start venga chiamato
-    mock_bot.conv_add_question_start.assert_called_once_with(mock_update, mock_context)
+    # Verify that the conv_review_question_start method is called
+    mock_bot.conv_review_question_start.assert_called_once_with(mock_update, mock_context)
 
-# Test per il comando /cancel (reset dello stato dell'utente)
+# Test for the /cancel command (reset user state)
 @pytest.mark.asyncio
 async def test_command_restart(mock_bot, mock_update, mock_context):
-    # Simula l'uso del comando /cancel
+    # Simulate the use of the /cancel command
     await mock_bot.command_restart(mock_update, mock_context)
     
-    # Verifica che venga inviato il messaggio di restart e la logica di stato sia stata reset
-    mock_context.bot.send_message.assert_called_once_with(
+    # Verify that the restart message is sent and the state logic has been reset
+    mock_bot.application.bot.send_message.assert_called_once_with(
         chat_id=mock_update.effective_chat.id,
         text=_escape_markdown(main_menu_text),
         parse_mode="MarkdownV2",
         reply_markup=MagicMock.ANY
     )
-    assert mock_context.user_data["state"] == "SELECTING_ACTION"
+    assert mock_context.user_data["state"] == State.SELECTING_ACTION
