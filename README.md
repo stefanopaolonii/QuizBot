@@ -105,3 +105,8 @@ Once you've completed the installation and configuration steps, you can start th
 
 ```bash
 python main.py
+
+
+<div align="left">
+  <img src="https://visitor-badge.laobi.icu/badge?page_id=stefanopaolonii.quizbot&left_text=Visitors" />
+</div>
