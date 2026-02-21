@@ -1,4 +1,3 @@
-![Visits](https://visitor-badge-self.vercel.app//api/badge/8860a08f-1f85-4a90-96ae-827496709396?style=flat-square&color=FFD700&labelColor=0d1117)
 ![GitHub Repo stars](https://img.shields.io/github/stars/stefanopaolonii/quizbot?style=flat-square&logo=github&labelColor=0d1117&color=FFD700)
 ![Discord](https://img.shields.io/discord/1336983930015846400?style=flat-square&logo=discord&logoColor=ffffff&labelColor=0d1117&link=https%3A%2F%2Fdiscord.gg%2FWJDjPHANV7)
 
